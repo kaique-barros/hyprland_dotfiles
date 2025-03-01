@@ -1,0 +1,28 @@
+#!/bin/bash
+
+WALLPAPER_DIR="$HOME/wallpapers/"
+CURRENT_WALL=$(hyprctl hyprpaper listloaded)
+
+# Get a random wallpaper that is not the current one
+WALLPAPER=$(find "$WALLPAPER_DIR" -type f ! -name "$(basename "$CURRENT_WALL")" | shuf -n 1)
+
+# Apply the selected wallpaper
+hyprctl hyprpaper reload ,"$WALLPAPER"
+
+
+CHANGE_THEME=~/.config/hypr/configs/changeTheme/backgroundColorSelector
+THEMES_DIR=$HOME/.config/hypr/configs/changeTheme
+CONFIGS_DIR=$HOME/.config/hypr/configs
+
+#wallpaper name without the extension
+WALLPAPER_CLEAN=$(echo $WALLPAPER | cut -d "." -f 1 | cut -d "/" -f 5)
+
+echo $WALLPAPER_CLEAN
+
+if test -f "$THEMES_DIR/color-themes/$WALLPAPER_CLEAN-colors.conf"; then
+	cp "$THEMES_DIR/color-themes/$WALLPAPER_CLEAN-colors.conf" "$CONFIGS_DIR/cores.conf"
+else
+	source $CHANGE_THEME/bin/activate
+	python $CHANGE_THEME/main/getColors.py $(echo $WALLPAPER | cut -d "/" -f 5) 
+	cp "$THEMES_DIR/color-themes/$WALLPAPER_CLEAN-colors.conf" "$CONFIGS_DIR/cores.conf"
+fi

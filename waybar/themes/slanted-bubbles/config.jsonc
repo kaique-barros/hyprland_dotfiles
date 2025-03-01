@@ -257,7 +257,7 @@
 
 	/*------------Clock------------------*/
 	"clock": {
-		"format": "{:%a %d/%m, %H:%M} ",
+		"format": "󰥔 {:%I:%M:%S %p} ",
 		"interval": 1,   
 		"tooltip-format": "<tt>{calendar}</tt>",
 		"calendar": {
